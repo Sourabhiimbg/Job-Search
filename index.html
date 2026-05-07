@@ -575,8 +575,8 @@ async function searchJobs() {
 
   try {
     const items = await runActor(
-      'curious_coder~linkedin-jobs-scraper',
-      { queries: [`${kw} ${loc}`], maxResults: max, proxy: { useApifyProxy: true } },
+      'nexgendata~linkedin-jobs-scraper',
+      { keyword: kw, location: loc, maxItems: max },
       'job-status', 'Scraping LinkedIn jobs — this takes 1–2 min'
     );
 
@@ -671,8 +671,8 @@ async function searchProjects() {
 
   try {
     const items = await runActor(
-      'curious_coder~linkedin-jobs-scraper',
-      { queries: [query], maxResults: 15, proxy: { useApifyProxy: true } },
+      'nexgendata~linkedin-jobs-scraper',
+      { keyword: query, location: loc, maxItems: 15 },
       'proj-status', `Searching for live projects on ${projSrc}`
     );
 
@@ -743,8 +743,8 @@ async function findRecruiters() {
 
   try {
     const items = await runActor(
-      'curious_coder~linkedin-jobs-scraper',
-      { queries: [`talent acquisition recruiter ${focus} ${company}`], maxResults: 8, proxy: { useApifyProxy: true } },
+      'nexgendata~linkedin-jobs-scraper',
+      { keyword: `recruiter talent acquisition ${company} ${focus}`, location: 'India', maxItems: 8 },
       'rec-status', `Searching LinkedIn for ${company} recruiters`
     );
 
