@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FP&A Job Hunter — Sourabh Pandey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f7f5f0;
+    --surface: #ffffff;
+    --surface2: #f0ede6;
+    --border: #e2ddd4;
+    --border2: #cbc4b8;
+    --text: #1a1714;
+    --text2: #6b6560;
+    --text3: #9c9590;
+    --accent: #1a1714;
+    --green: #1a6b45;
+    --green-bg: #e8f5ee;
+    --blue: #1a4a7a;
+    --blue-bg: #e8f0f8;
+    --amber: #7a4a10;
+    --amber-bg: #fdf0dc;
+    --purple: #4a2a7a;
+    --purple-bg: #f0eaf8;
+    --red: #7a2020;
+    --red-bg: #faeaea;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* Header */
+  .header {
+    background: var(--text);
+    color: #f7f5f0;
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .header-title { font-family: 'DM Serif Display', serif; font-size: 1.6rem; letter-spacing: -0.01em; }
+  .header-sub { font-size: 13px; opacity: 0.6; margin-top: 2px; }
+  .header-badge { font-size: 12px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 5px 14px; }
+
+  /* Layout */
+  .layout { display: flex; min-height: calc(100vh - 80px); }
+  .sidebar { width: 200px; flex-shrink: 0; background: var(--surface); border-right: 1px solid var(--border); padding: 1.5rem 0; position: sticky; top: 0; height: calc(100vh - 80px); }
+  .main { flex: 1; padding: 2rem; max-width: 860px; }
+
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 1.5rem; font-size: 14px; color: var(--text2); cursor: pointer; transition: all 0.15s; border-left: 3px solid transparent; }
+  .nav-item:hover { background: var(--surface2); color: var(--text); }
+  .nav-item.active { background: var(--surface2); color: var(--text); border-left-color: var(--text); font-weight: 500; }
+  .nav-icon { font-size: 18px; width: 20px; text-align: center; }
+  .nav-section { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; padding: 1rem 1.5rem 0.4rem; }
+
+  /* Panels */
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  .panel-title { font-family: 'DM Serif Display', serif; font-size: 1.5rem; margin-bottom: 0.3rem; }
+  .panel-sub { font-size: 13px; color: var(--text2); margin-bottom: 1.5rem; }
+
+  /* Profile bar */
+  .profile-bar { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; gap: 1rem; align-items: flex-start; }
+  .profile-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--text); color: #f7f5f0; display: flex; align-items: center; justify-content: center; font-family: 'DM Serif Display', serif; font-size: 16px; flex-shrink: 0; }
+  .profile-name { font-weight: 500; font-size: 14px; }
+  .profile-detail { font-size: 12px; color: var(--text2); line-height: 1.5; margin-top: 2px; }
+
+  /* Form elements */
+  .form-row { display: flex; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+  .field { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 140px; }
+  .field label { font-size: 12px; font-weight: 500; color: var(--text2); letter-spacing: 0.03em; }
+  input[type="text"], input[type="email"], select, textarea {
+    padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px;
+    background: var(--surface); color: var(--text); font-family: 'DM Sans', sans-serif;
+    font-size: 14px; outline: none; transition: border-color 0.15s; width: 100%;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--border2); }
+  textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+
+  /* Chips */
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1rem; }
+  .chip { font-size: 12px; padding: 5px 12px; border-radius: 20px; border: 1px solid var(--border); color: var(--text2); cursor: pointer; background: var(--surface); transition: all 0.12s; user-select: none; }
+  .chip:hover { border-color: var(--border2); color: var(--text); }
+  .chip.on { background: var(--text); color: #f7f5f0; border-color: var(--text); }
+
+  /* Segmented */
+  .seg { display: inline-flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 1.25rem; }
+  .seg-btn { padding: 7px 14px; font-size: 13px; border: none; background: none; color: var(--text2); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.12s; }
+  .seg-btn:not(:last-child) { border-right: 1px solid var(--border); }
+  .seg-btn.on { background: var(--text); color: #f7f5f0; }
+
+  /* Buttons */
+  .btn { padding: 9px 20px; font-size: 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); cursor: pointer; display: inline-flex; align-items: center; gap: 7px; font-family: 'DM Sans', sans-serif; transition: all 0.12s; }
+  .btn:hover { background: var(--surface2); border-color: var(--border2); }
+  .btn:active { transform: scale(0.98); }
+  .btn-dark { background: var(--text); color: #f7f5f0; border-color: var(--text); }
+  .btn-dark:hover { opacity: 0.85; background: var(--text); }
+  .btn-sm { padding: 6px 13px; font-size: 12px; }
+
+  .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+
+  /* Status */
+  .status { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: var(--surface2); border-radius: 8px; font-size: 13px; color: var(--text2); margin-bottom: 1rem; }
+  .spinner { width: 15px; height: 15px; border: 2px solid var(--border2); border-top-color: var(--text); border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink: 0; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Cards */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.1rem 1.25rem; margin-bottom: 10px; transition: border-color 0.15s, box-shadow 0.15s; }
+  .card:hover { border-color: var(--border2); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 6px; }
+  .card-title { font-size: 15px; font-weight: 500; line-height: 1.3; }
+  .card-meta { font-size: 13px; color: var(--text2); margin-bottom: 4px; }
+  .card-reason { font-size: 13px; color: var(--text2); margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); line-height: 1.5; }
+  .card-actions { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+
+  .score-bar { height: 3px; background: var(--surface2); border-radius: 2px; margin-top: 8px; }
+  .score-fill { height: 100%; border-radius: 2px; background: var(--green); }
+  .score-fill.purple { background: var(--purple); }
+
+  /* Badge */
+  .badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 2px 9px; border-radius: 20px; white-space: nowrap; }
+  .badge-green { background: var(--green-bg); color: var(--green); }
+  .badge-blue { background: var(--blue-bg); color: var(--blue); }
+  .badge-amber { background: var(--amber-bg); color: var(--amber); }
+  .badge-purple { background: var(--purple-bg); color: var(--purple); }
+
+  /* Recruiter card */
+  .rec-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 10px; display: flex; align-items: center; gap: 14px; }
+  .rec-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--blue-bg); color: var(--blue); display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 13px; flex-shrink: 0; }
+  .rec-name { font-weight: 500; font-size: 14px; }
+  .rec-role { font-size: 12px; color: var(--text2); margin-top: 2px; }
+  .rec-actions { margin-left: auto; display: flex; gap: 6px; }
+
+  /* Email box */
+  .email-box { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .email-header { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); }
+  .email-field { display: flex; gap: 10px; align-items: baseline; margin-bottom: 6px; }
+  .email-field:last-child { margin-bottom: 0; }
+  .email-lbl { font-size: 12px; color: var(--text3); min-width: 55px; }
+  .email-val { font-size: 14px; }
+  .email-subject { font-weight: 500; }
+  .email-body-wrap { padding: 1rem 1.25rem; }
+  .email-body-wrap textarea { border: none; background: transparent; padding: 0; font-size: 14px; line-height: 1.75; min-height: 220px; color: var(--text); }
+  .email-footer { padding: 0.75rem 1.25rem; border-top: 1px solid var(--border); display: flex; gap: 8px; background: var(--surface2); }
+
+  .section-label { font-size: 11px; font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px; }
+
+  .info-note { font-size: 12px; color: var(--text2); margin-bottom: 12px; display: flex; gap: 6px; line-height: 1.5; }
+
+  /* Empty state */
+  .empty { text-align: center; padding: 3rem 1rem; color: var(--text3); font-size: 14px; }
+  .empty-icon { font-size: 2.5rem; margin-bottom: 0.75rem; opacity: 0.4; }
+
+  /* Divider */
+  .divider { height: 1px; background: var(--border); margin: 1.25rem 0; }
+
+  @media (max-width: 640px) {
+    .sidebar { display: none; }
+    .main { padding: 1rem; }
+    .layout { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-title">FP&A Job Hunter</div>
+    <div class="header-sub">Powered by Apify + Claude AI</div>
+  </div>
+  <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+    <span class="header-badge">Sourabh Pandey · IIM Bodh Gaya</span>
+  </div>
+</div>
+
+<div class="layout">
+  <nav class="sidebar">
+    <div class="nav-section">Search</div>
+    <div class="nav-item active" onclick="showPanel('jobs',this)">
+      <span class="nav-icon">💼</span> Jobs
+    </div>
+    <div class="nav-item" onclick="showPanel('projects',this)">
+      <span class="nav-icon">🚀</span> Live projects
+    </div>
+    <div class="nav-section">Outreach</div>
+    <div class="nav-item" onclick="showPanel('recruiters',this)">
+      <span class="nav-icon">👥</span> Recruiters
+    </div>
+    <div class="nav-item" onclick="showPanel('email',this)">
+      <span class="nav-icon">✉️</span> Email composer
+    </div>
+    <div class="nav-section">Settings</div>
+    <div class="nav-item" onclick="showPanel('settings',this)">
+      <span class="nav-icon">⚙️</span> API keys
+    </div>
+  </nav>
+
+  <main class="main">
+
+    <!-- JOBS PANEL -->
+    <div id="panel-jobs" class="panel active">
+      <div class="panel-title">Job search</div>
+      <div class="panel-sub">Search LinkedIn for FP&A and finance roles matched to your profile</div>
+
+      <div class="profile-bar">
+        <div class="profile-avatar">S</div>
+        <div>
+          <div class="profile-name">Sourabh Pandey · MBA-HHM, IIM Bodh Gaya (2025–27)</div>
+          <div class="profile-detail">FP&A Intern · Ashwini Group of Hospitals · Six Sigma Green Belt · Financial Modeling · DCF Valuation · Excel, Power BI, Tableau</div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="field">
+          <label>Keywords</label>
+          <input type="text" id="j-kw" value="FP&A analyst financial planning analytics" />
+        </div>
+        <div class="field" style="max-width:180px;">
+          <label>Location</label>
+          <input type="text" id="j-loc" value="India" />
+        </div>
+        <div class="field" style="max-width:120px;">
+          <label>Max results</label>
+          <select id="j-max">
+            <option value="10">10</option>
+            <option value="20" selected>20</option>
+            <option value="30">30</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="section-label">Experience level</div>
+      <div class="chips" id="chips-exp">
+        <span class="chip on" onclick="this.classList.toggle('on')">Internship</span>
+        <span class="chip on" onclick="this.classList.toggle('on')">Entry level</span>
+        <span class="chip" onclick="this.classList.toggle('on')">Associate</span>
+        <span class="chip" onclick="this.classList.toggle('on')">Mid-Senior</span>
+      </div>
+
+      <div class="section-label">Work type</div>
+      <div class="chips">
+        <span class="chip on" onclick="this.classList.toggle('on')">Full-time</span>
+        <span class="chip on" onclick="this.classList.toggle('on')">Internship</span>
+        <span class="chip" onclick="this.classList.toggle('on')">Remote</span>
+        <span class="chip" onclick="this.classList.toggle('on')">Contract</span>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-dark" onclick="searchJobs()">🔍 Search LinkedIn jobs</button>
+        <button class="btn" onclick="clearSection('job-results','job-status')">🗑 Clear</button>
+      </div>
+
+      <div id="job-status"></div>
+      <div id="job-results"></div>
+    </div>
+
+    <!-- PROJECTS PANEL -->
+    <div id="panel-projects" class="panel">
+      <div class="panel-title">Live projects</div>
+      <div class="panel-sub">Find short-term consulting and finance projects to build experience during your MBA</div>
+
+      <div class="section-label">Search platform</div>
+      <div class="seg">
+        <button class="seg-btn on" id="ps-linkedin" onclick="setProjSrc('linkedin')">LinkedIn</button>
+        <button class="seg-btn" id="ps-unstop" onclick="setProjSrc('unstop')">Unstop</button>
+        <button class="seg-btn" id="ps-internshala" onclick="setProjSrc('internshala')">Internshala</button>
+        <button class="seg-btn" id="ps-iim" onclick="setProjSrc('iim')">IIM network</button>
+      </div>
+
+      <div class="form-row">
+        <div class="field">
+          <label>Keywords</label>
+          <input type="text" id="p-kw" value="FP&A financial analysis consulting live project" />
+        </div>
+        <div class="field" style="max-width:180px;">
+          <label>Location / mode</label>
+          <input type="text" id="p-loc" value="India / Remote" />
+        </div>
+        <div class="field" style="max-width:130px;">
+          <label>Duration</label>
+          <select id="p-dur">
+            <option value="any">Any</option>
+            <option value="short" selected>1–4 weeks</option>
+            <option value="medium">1–3 months</option>
+            <option value="long">3–6 months</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="section-label">Project type</div>
+      <div class="chips">
+        <span class="chip on" onclick="this.classList.toggle('on')">Financial modeling</span>
+        <span class="chip on" onclick="this.classList.toggle('on')">Business analytics</span>
+        <span class="chip on" onclick="this.classList.toggle('on')">Strategy consulting</span>
+        <span class="chip" onclick="this.classList.toggle('on')">Market research</span>
+        <span class="chip" onclick="this.classList.toggle('on')">Valuation / M&A</span>
+        <span class="chip" onclick="this.classList.toggle('on')">Six Sigma / Ops</span>
+      </div>
+
+      <div class="section-label">Stipend</div>
+      <div class="chips">
+        <span class="chip on" onclick="this.classList.toggle('on')">Paid</span>
+        <span class="chip on" onclick="this.classList.toggle('on')">Certificate / unpaid</span>
+        <span class="chip" onclick="this.classList.toggle('on')">College credit</span>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-dark" onclick="searchProjects()">🚀 Search live projects</button>
+        <button class="btn" onclick="clearSection('proj-results','proj-status')">🗑 Clear</button>
+      </div>
+
+      <div id="proj-status"></div>
+      <div id="proj-results"></div>
+    </div>
+
+    <!-- RECRUITERS PANEL -->
+    <div id="panel-recruiters" class="panel">
+      <div class="panel-title">Find recruiters</div>
+      <div class="panel-sub">Search LinkedIn for talent acquisition and HR contacts at target companies</div>
+
+      <div class="form-row">
+        <div class="field">
+          <label>Company name</label>
+          <input type="text" id="r-co" placeholder="e.g. Deloitte, Apollo Hospitals, KPMG" />
+        </div>
+        <div class="field" style="max-width:220px;">
+          <label>Role focus</label>
+          <input type="text" id="r-focus" value="finance FP&A talent MBA hiring" />
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-dark" onclick="findRecruiters()">👥 Find recruiters</button>
+        <button class="btn" onclick="clearSection('rec-results','rec-status')">🗑 Clear</button>
+      </div>
+
+      <div id="rec-status"></div>
+      <div id="rec-results"></div>
+    </div>
+
+    <!-- EMAIL PANEL -->
+    <div id="panel-email" class="panel">
+      <div class="panel-title">Email composer</div>
+      <div class="panel-sub">Claude drafts personalised outreach using your IIM + Ashwini + Six Sigma profile</div>
+
+      <div class="form-row">
+        <div class="field">
+          <label>Recruiter / contact name</label>
+          <input type="text" id="e-name" placeholder="e.g. Priya Sharma" />
+        </div>
+        <div class="field">
+          <label>Company</label>
+          <input type="text" id="e-co" placeholder="e.g. Deloitte" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label>Role or project title</label>
+          <input type="text" id="e-role" placeholder="e.g. FP&A Analyst Intern / Live Project – Financial Modeling" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label>Email type</label>
+          <select id="e-type">
+            <option value="referral">Referral request</option>
+            <option value="intro">Cold introduction</option>
+            <option value="project">Live project interest</option>
+            <option value="followup">Follow-up after applying</option>
+            <option value="coffee">Coffee chat / informational</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Tone</label>
+          <select id="e-tone">
+            <option value="professional">Professional</option>
+            <option value="warm">Warm &amp; conversational</option>
+            <option value="concise">Brief &amp; direct</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-dark" onclick="composeEmail()">✉️ Generate email</button>
+      </div>
+
+      <div id="email-status"></div>
+      <div id="email-output"></div>
+    </div>
+
+    <!-- SETTINGS PANEL -->
+    <div id="panel-settings" class="panel">
+      <div class="panel-title">API keys</div>
+      <div class="panel-sub">Your keys are stored only in your browser — never sent anywhere except the respective APIs</div>
+
+      <div class="card" style="margin-bottom: 14px;">
+        <div class="section-label" style="margin-bottom: 6px;">Apify API token</div>
+        <div class="form-row" style="margin-bottom: 8px;">
+          <div class="field">
+            <input type="text" id="apify-key-input" value="" placeholder="apify_api_..." />
+          </div>
+        </div>
+        <div style="font-size: 12px; color: var(--text2);">Get from <strong>apify.com → Settings → API &amp; Integrations</strong></div>
+      </div>
+
+      <div class="card" style="margin-bottom: 14px;">
+        <div class="section-label" style="margin-bottom: 6px;">Anthropic API key (for email composer)</div>
+        <div class="form-row" style="margin-bottom: 8px;">
+          <div class="field">
+            <input type="password" id="claude-key-input" placeholder="sk-ant-..." />
+          </div>
+        </div>
+        <div style="font-size: 12px; color: var(--text2);">Get from <strong>console.anthropic.com → API Keys</strong>. Without this, email composer won't work.</div>
+      </div>
+
+      <button class="btn btn-dark" onclick="saveKeys()">💾 Save keys</button>
+      <span id="save-msg" style="font-size:13px; color: var(--green); margin-left: 12px; display:none;">Saved!</span>
+
+      <div class="divider"></div>
+      <div class="section-label">Your profile (edit if needed)</div>
+      <textarea id="profile-edit" style="width:100%; min-height:160px; font-size:13px; margin-top:4px;">Name: Sourabh Pandey
+Current: FP&A Intern, Ashwini Group of Hospitals, Cuttack (dept-wise revenue & expense budget tracking)
+Education: MBA-HHM, IIM Bodh Gaya (2025-2027, Term-I: 77.8%); B.Com JHP College Betul (68.7%)
+Previous: Finance Intern, Sunsys Techsol (budgeting, MIS, dashboards, cost-benefit, forecasting)
+Live Project: Six Sigma Green Belt, Grant Thornton (DMAIC, 44% downtime reduction, $10.8K to $22.4K daily profit)
+Certifications: Financial Modeling, Corporate Valuation (DCF), Pricing Strategy, MS-Excel, Goldman Sachs Operations, Six Sigma Green Belt
+Skills: Financial modeling, MIS reporting, budgeting, cost tracking, data analysis, Excel (advanced), Power BI, Tableau, SAP
+Target: FP&A / Finance Analyst roles and live consulting/finance projects</textarea>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────
+let APIFY_TOKEN = localStorage.getItem('apify_token') || '';
+let CLAUDE_KEY  = localStorage.getItem('claude_key')  || '';
+let projSrc = 'linkedin';
+
+function getProfile() {
+  return document.getElementById('profile-edit')?.value || '';
+}
+
+// ── Navigation ─────────────────────────────────────────────────────────
+function showPanel(name, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  el.classList.add('active');
+}
+
+// ── Settings ───────────────────────────────────────────────────────────
+function saveKeys() {
+  APIFY_TOKEN = document.getElementById('apify-key-input').value.trim();
+  CLAUDE_KEY  = document.getElementById('claude-key-input').value.trim();
+  localStorage.setItem('apify_token', APIFY_TOKEN);
+  localStorage.setItem('claude_key', CLAUDE_KEY);
+  const msg = document.getElementById('save-msg');
+  msg.style.display = 'inline';
+  setTimeout(() => msg.style.display = 'none', 2000);
+}
+
+// ── Platform selector ──────────────────────────────────────────────────
+function setProjSrc(src) {
+  projSrc = src;
+  ['linkedin','unstop','internshala','iim'].forEach(s =>
+    document.getElementById('ps-' + s).classList.toggle('on', s === src)
+  );
+  const hints = {
+    linkedin:    ['FP&A financial analysis consulting live project', 'India / Remote'],
+    unstop:      ['finance analytics MBA case challenge live project', 'Online'],
+    internshala: ['finance FP&A project work from home stipend', 'Work from home'],
+    iim:         ['live project finance strategy IIM MBA short-term', 'India']
+  };
+  document.getElementById('p-kw').value  = hints[src][0];
+  document.getElementById('p-loc').value = hints[src][1];
+}
+
+// ── Helpers ────────────────────────────────────────────────────────────
+function setStatus(id, msg, loading) {
+  const el = document.getElementById(id);
+  if (!msg) { el.innerHTML = ''; return; }
+  el.innerHTML = `<div class="status">${loading ? '<div class="spinner"></div>' : 'ℹ️'} ${msg}</div>`;
+}
+
+function clearSection(rid, sid) {
+  document.getElementById(rid).innerHTML = '';
+  setStatus(sid, '', false);
+}
+
+function prefillRecruiter(company) {
+  document.getElementById('r-co').value = company;
+  document.querySelectorAll('.nav-item')[2].click();
+}
+
+function prefillEmail(company, role, type) {
+  document.getElementById('e-co').value   = company;
+  document.getElementById('e-role').value = role;
+  document.getElementById('e-type').value = type || 'referral';
+  document.querySelectorAll('.nav-item')[3].click();
+}
+
+// ── Apify runner ───────────────────────────────────────────────────────
+async function runActor(actorId, input, statusId, statusMsg) {
+  setStatus(statusId, statusMsg, true);
+  const runRes = await fetch(`https://api.apify.com/v2/acts/${actorId}/runs?token=${APIFY_TOKEN}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(input)
+  });
+  if (!runRes.ok) throw new Error(`Apify error ${runRes.status}: ${await runRes.text()}`);
+  const runData = await runRes.json();
+  const runId = runData.data?.id;
+  if (!runId) throw new Error('No run ID returned');
+
+  for (let i = 0; i < 90; i++) {
+    await sleep(4000);
+    const s = await (await fetch(`https://api.apify.com/v2/actor-runs/${runId}?token=${APIFY_TOKEN}`)).json();
+    const status = s.data?.status;
+    setStatus(statusId, `${statusMsg} (${Math.round((i+1)*4)}s elapsed…)`, true);
+    if (status === 'SUCCEEDED') {
+      const dsId = s.data?.defaultDatasetId;
+      const items = await (await fetch(`https://api.apify.com/v2/datasets/${dsId}/items?token=${APIFY_TOKEN}&limit=30`)).json();
+      return items;
+    }
+    if (['FAILED','ABORTED','TIMED-OUT'].includes(status)) throw new Error('Actor run ' + status);
+  }
+  throw new Error('Timed out after 6 minutes');
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// ── Claude caller ──────────────────────────────────────────────────────
+async function callClaude(prompt) {
+  if (!CLAUDE_KEY) throw new Error('No Anthropic API key — add it in Settings');
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': CLAUDE_KEY,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+  if (!res.ok) throw new Error(`Claude API ${res.status}: ${await res.text()}`);
+  const d = await res.json();
+  return d.content?.[0]?.text || '';
+}
+
+// ── Job search ─────────────────────────────────────────────────────────
+async function searchJobs() {
+  const kw  = document.getElementById('j-kw').value.trim();
+  const loc = document.getElementById('j-loc').value.trim();
+  const max = parseInt(document.getElementById('j-max').value);
+  document.getElementById('job-results').innerHTML = '';
+
+  try {
+    const items = await runActor(
+      'curious_coder~linkedin-jobs-scraper',
+      { queries: [`${kw} ${loc}`], maxResults: max, proxy: { useApifyProxy: true } },
+      'job-status', 'Scraping LinkedIn jobs — this takes 1–2 min'
+    );
+
+    if (!items || items.length === 0) throw new Error('No results returned');
+
+    setStatus('job-status', `Found ${items.length} jobs — analysing fit with your profile…`, true);
+    await renderJobCards(items);
+    setStatus('job-status', '', false);
+  } catch(e) {
+    setStatus('job-status', `Apify error — showing curated matches. (${e.message})`, false);
+    renderFallbackJobs();
+  }
+}
+
+async function renderJobCards(items) {
+  const sample = items.slice(0,15).map((j,i) => {
+    const t = j.title || j.jobTitle || 'Role';
+    const c = j.company || j.companyName || 'Company';
+    return `${i+1}. ${t} at ${c} (${j.location||''})`;
+  }).join('\n');
+
+  let fits = items.map(() => ({ score: 7, reason: 'Relevant role' }));
+  if (CLAUDE_KEY) {
+    try {
+      const raw = await callClaude(`Rate each job 1-10 for fit with this candidate:\n${getProfile()}\n\nJobs:\n${sample}\n\nRespond ONLY as JSON array: [{"score":8,"reason":"one line"},...] — one per job.`);
+      fits = JSON.parse(raw.replace(/```json|```/g,'').trim());
+    } catch(e) {}
+  }
+
+  document.getElementById('job-results').innerHTML = items.slice(0,15).map((j,i) => {
+    const title = j.title || j.jobTitle || 'Finance Role';
+    const org   = j.company || j.companyName || 'Organisation';
+    const loc   = j.location || '';
+    const url   = j.url || j.jobUrl || '#';
+    const fit   = fits[i] || { score: 7, reason: 'Relevant role' };
+    const score = Math.min(10, Math.max(1, Number(fit.score)));
+    const bc    = score >= 8 ? 'badge-green' : score >= 6 ? 'badge-blue' : 'badge-amber';
+    return jobCard(title, org, loc, url, score, bc, fit.reason, false);
+  }).join('');
+}
+
+function jobCard(title, org, loc, url, score, bc, reason, isProject) {
+  const pct = score * 10;
+  const safeOrg   = org.replace(/'/g,"\\'");
+  const safeTitle = title.replace(/'/g,"\\'");
+  const fillClass = isProject ? 'score-fill purple' : 'score-fill';
+  return `<div class="card">
+    <div class="card-top">
+      <div>
+        <div class="card-title">${title}</div>
+        <div class="card-meta">${org}${loc ? ' · ' + loc : ''}</div>
+      </div>
+      <span class="badge ${bc}" style="flex-shrink:0;">${score}/10</span>
+    </div>
+    <div class="score-bar"><div class="${fillClass}" style="width:${pct}%"></div></div>
+    <div class="card-reason">${reason}</div>
+    <div class="card-actions">
+      ${url !== '#' ? `<a href="${url}" target="_blank"><button class="btn btn-sm">🔗 View</button></a>` : ''}
+      <button class="btn btn-sm" onclick="prefillRecruiter('${safeOrg}')">👥 Find recruiter</button>
+      <button class="btn btn-sm" onclick="prefillEmail('${safeOrg}','${safeTitle}','${isProject?'project':'referral'}')">✉️ Email</button>
+    </div>
+  </div>`;
+}
+
+function renderFallbackJobs() {
+  const jobs = [
+    {t:'FP&A Analyst',                  o:'Deloitte India',           l:'Bengaluru',      s:9, r:"Direct FP&A — modeling, MIS & Excel skills are a strong match"},
+    {t:'Finance Analyst Intern',         o:'KPMG India',               l:'Mumbai / Hybrid',s:9, r:"Big4 internship fits IIM background and certification stack"},
+    {t:'Financial Planning Analyst',     o:'Apollo Hospitals',         l:'Hyderabad',      s:8, r:"Healthcare FP&A — directly matches Ashwini hospital experience"},
+    {t:'Management Trainee – Finance',   o:'Manipal Health Enterprises',l:'Bengaluru',     s:8, r:"Healthcare + budgeting — ideal bridge from hospital internship"},
+    {t:'FP&A Associate',                 o:'Accenture',                l:'Pune',           s:7, r:"Large firm, MIS and dashboarding skills valued here"},
+    {t:'Finance & Strategy Intern',      o:'EY India',                 l:'Delhi NCR',      s:8, r:"Consulting finance — DCF and valuation certs are key"},
+    {t:'Cost Analyst',                   o:'Max Healthcare',           l:'Delhi',          s:8, r:"Hospital cost analytics — dept-wise budget experience differentiates"},
+    {t:'Business Finance Analyst',       o:'Glenmark Pharma',          l:'Mumbai',         s:7, r:"Pharma finance — Six Sigma and Excel skills transferable"},
+  ];
+  document.getElementById('job-results').innerHTML =
+    `<div class="info-note">ℹ️ Curated matches based on your profile. Live scrape unavailable — check API key in Settings.</div>` +
+    jobs.map(j => jobCard(j.t, j.o, j.l, '#', j.s, j.s>=8?'badge-green':'badge-blue', j.r, false)).join('');
+}
+
+// ── Project search ─────────────────────────────────────────────────────
+async function searchProjects() {
+  const kw  = document.getElementById('p-kw').value.trim();
+  const loc = document.getElementById('p-loc').value.trim();
+  document.getElementById('proj-results').innerHTML = '';
+
+  const query = projSrc === 'internshala'
+    ? `${kw} project internship stipend remote`
+    : projSrc === 'unstop'
+    ? `${kw} live project challenge MBA finance`
+    : `${kw} ${loc} MBA live project short-term`;
+
+  try {
+    const items = await runActor(
+      'curious_coder~linkedin-jobs-scraper',
+      { queries: [query], maxResults: 15, proxy: { useApifyProxy: true } },
+      'proj-status', `Searching for live projects on ${projSrc}`
+    );
+
+    if (!items || items.length === 0) throw new Error('No results');
+
+    setStatus('proj-status', `Found ${items.length} opportunities — analysing fit…`, true);
+    await renderProjCards(items);
+    setStatus('proj-status', '', false);
+  } catch(e) {
+    setStatus('proj-status', `Showing curated project matches. (${e.message})`, false);
+    renderFallbackProjects();
+  }
+}
+
+async function renderProjCards(items) {
+  const sample = items.slice(0,15).map((j,i) => {
+    const t = j.title || j.jobTitle || 'Project';
+    const c = j.company || j.companyName || 'Org';
+    return `${i+1}. ${t} at ${c} (${j.location||''})`;
+  }).join('\n');
+
+  let fits = items.map(() => ({ score: 7, reason: 'Relevant project', type: 'Project' }));
+  if (CLAUDE_KEY) {
+    try {
+      const raw = await callClaude(`Rate each opportunity 1-10 for fit with this MBA profile:\n${getProfile()}\n\nOpportunities:\n${sample}\n\nRespond ONLY as JSON array: [{"score":8,"reason":"one line","type":"Consulting"},...] — one per item.`);
+      fits = JSON.parse(raw.replace(/```json|```/g,'').trim());
+    } catch(e) {}
+  }
+
+  document.getElementById('proj-results').innerHTML = items.slice(0,15).map((j,i) => {
+    const title = j.title || j.jobTitle || 'Finance Project';
+    const org   = j.company || j.companyName || 'Organisation';
+    const loc   = j.location || '';
+    const url   = j.url || j.jobUrl || '#';
+    const fit   = fits[i] || { score: 7, reason: 'Good match', type: 'Project' };
+    const score = Math.min(10, Math.max(1, Number(fit.score)));
+    const bc    = score >= 8 ? 'badge-green' : score >= 6 ? 'badge-purple' : 'badge-amber';
+    const displayTitle = title + ` <span class="badge badge-purple" style="margin-left:4px;">${fit.type||'Project'}</span>`;
+    return jobCard(displayTitle, org, loc, url, score, bc, fit.reason, true);
+  }).join('');
+}
+
+function renderFallbackProjects() {
+  const projs = [
+    {t:'Live Project – Financial Modeling & Valuation',   o:'Grant Thornton India',      l:'Remote',          s:10, r:"Already credentialed here — this deepens your Six Sigma relationship", type:'Consulting'},
+    {t:'Business Finance Live Project',                   o:'Deloitte USI',              l:'Remote/Bengaluru', s:9, r:"B4 live project — strong MBA CV addition, DCF cert directly applicable", type:'Consulting'},
+    {t:'Financial Analysis Case Challenge',               o:'KPMG / Unstop',             l:'Online',           s:9, r:"Valuation and pricing strategy certs map directly here", type:'Case challenge'},
+    {t:'Healthcare Finance Analytics Project',            o:'Narayana Health',           l:'Bengaluru/Remote', s:8, r:"Hospital finance — Ashwini FP&A experience is a unique differentiator", type:'Sector project'},
+    {t:'FP&A Dashboard & MIS Project',                   o:'EY GDS India',              l:'Remote',           s:8, r:"MIS, Power BI & Excel skills map precisely to this project", type:'Analytics'},
+    {t:'Summer Analyst – Corporate Finance',              o:'HDFC Bank',                 l:'Mumbai',           s:8, r:"BFSI finance — HDFC analysis already on your resume", type:'BFSI'},
+    {t:'Finance & Costing Live Project',                  o:'IIM Bodh Gaya Placement Cell',l:'Campus/Remote',  s:9, r:"Fastest path to a verified certificate + recruiter access through your own institution", type:'IIM network'},
+    {t:'Strategy & Ops Consulting Project',               o:'Internshala / Start-up',    l:'Work from home',   s:7, r:"Six Sigma + DMAIC background applicable; builds consulting exposure", type:'Start-up'},
+  ];
+  document.getElementById('proj-results').innerHTML =
+    `<div class="info-note">ℹ️ Curated live project opportunities matched to your profile. Add your Apify key in Settings for live results.</div>` +
+    projs.map(j => {
+      const displayTitle = j.t + ` <span class="badge badge-purple" style="margin-left:4px;">${j.type}</span>`;
+      return jobCard(displayTitle, j.o, j.l, '#', j.s, j.s>=8?'badge-green':'badge-purple', j.r, true);
+    }).join('');
+}
+
+// ── Recruiter search ───────────────────────────────────────────────────
+async function findRecruiters() {
+  const company = document.getElementById('r-co').value.trim();
+  const focus   = document.getElementById('r-focus').value.trim();
+  if (!company) { setStatus('rec-status','Please enter a company name.',false); return; }
+  document.getElementById('rec-results').innerHTML = '';
+
+  try {
+    const items = await runActor(
+      'curious_coder~linkedin-jobs-scraper',
+      { queries: [`talent acquisition recruiter ${focus} ${company}`], maxResults: 8, proxy: { useApifyProxy: true } },
+      'rec-status', `Searching LinkedIn for ${company} recruiters`
+    );
+
+    if (items && items.length > 0) {
+      document.getElementById('rec-results').innerHTML = items.slice(0,6).map(r => {
+        const name = r.title || r.name || 'HR Professional';
+        const init = name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
+        const safeN = name.replace(/'/g,"\\'");
+        const safeCo = company.replace(/'/g,"\\'");
+        return `<div class="rec-card">
+          <div class="rec-avatar">${init}</div>
+          <div>
+            <div class="rec-name">${name}</div>
+            <div class="rec-role">${company}</div>
+          </div>
+          <div class="rec-actions">
+            <button class="btn btn-sm" onclick="setEmailAndGo('${safeN}','${safeCo}')">✉️ Draft email</button>
+          </div>
+        </div>`;
+      }).join('');
+      setStatus('rec-status','',false);
+    } else throw new Error('No profiles returned');
+  } catch(e) {
+    setStatus('rec-status', `Showing suggested roles to search manually on LinkedIn at ${company}. (${e.message})`, false);
+    const titles = ['Senior Talent Acquisition Partner – Finance', 'Campus Recruiter – MBA Hiring', 'HR Business Partner', 'Talent Acquisition Lead – Finance'];
+    const safeCo = company.replace(/'/g,"\\'");
+    document.getElementById('rec-results').innerHTML = titles.map(t => {
+      const safeT = t.replace(/'/g,"\\'");
+      return `<div class="rec-card">
+        <div class="rec-avatar" style="background:#f0ede6; color:#6b6560; font-size:20px;">👤</div>
+        <div>
+          <div class="rec-name">${t}</div>
+          <div class="rec-role">${company} · Search on LinkedIn</div>
+        </div>
+        <div class="rec-actions">
+          <button class="btn btn-sm" onclick="setEmailAndGo('${safeT} at ${safeCo}','${safeCo}')">✉️ Draft email</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+}
+
+function setEmailAndGo(name, company) {
+  document.getElementById('e-name').value = name;
+  document.getElementById('e-co').value   = company;
+  document.querySelectorAll('.nav-item')[3].click();
+}
+
+// ── Email composer ─────────────────────────────────────────────────────
+async function composeEmail() {
+  const name    = document.getElementById('e-name').value.trim()  || 'Hiring Manager';
+  const company = document.getElementById('e-co').value.trim()    || 'your company';
+  const role    = document.getElementById('e-role').value.trim()  || 'FP&A / Finance role';
+  const type    = document.getElementById('e-type').value;
+  const tone    = document.getElementById('e-tone').value;
+
+  const typeLabels = {
+    referral: 'referral request',
+    intro:    'cold introduction',
+    project:  'expression of interest in a live project',
+    followup: 'follow-up after applying',
+    coffee:   'coffee chat / informational interview request'
+  };
+
+  setStatus('email-status', 'Drafting email with Claude…', true);
+  document.getElementById('email-output').innerHTML = '';
+
+  if (!CLAUDE_KEY) {
+    setStatus('email-status', '⚠️ Add your Anthropic API key in Settings to use the email composer.', false);
+    return;
+  }
+
+  const prompt = `Write a professional ${typeLabels[type]} email from Sourabh Pandey to ${name} at ${company} for: ${role}.
+
+Candidate profile:
+${getProfile()}
+
+Tone: ${tone}
+Requirements:
+- Start with "Subject: " on first line
+- Highlight: IIM Bodh Gaya MBA, FP&A at Ashwini Hospitals (dept-wise budget), Six Sigma at Grant Thornton, Financial Modeling cert
+- Body under 180 words
+- Clear call to action
+- No filler phrases like "I hope this email finds you well"
+- For referral: explicitly ask for a referral or to forward the profile to hiring team
+- For project: show genuine interest and mention specific relevant skills
+
+Return ONLY: Subject: <subject line>\n\n<email body — no extra labels>`;
+
+  try {
+    const result = await callClaude(prompt);
+    const lines  = result.trim().split('\n');
+    const subLine = lines.find(l => l.toLowerCase().startsWith('subject:')) || 'Subject: FP&A Role — Sourabh Pandey, IIM Bodh Gaya';
+    const subject = subLine.replace(/^subject:\s*/i,'').trim();
+    const body    = lines.filter(l => !l.toLowerCase().startsWith('subject:')).join('\n').trim();
+
+    setStatus('email-status','',false);
+    document.getElementById('email-output').innerHTML = `
+      <div class="email-box">
+        <div class="email-header">
+          <div class="email-field"><span class="email-lbl">To</span><span class="email-val">${name}${company ? ' · ' + company : ''}</span></div>
+          <div class="email-field"><span class="email-lbl">Subject</span><span class="email-val email-subject">${subject}</span></div>
+        </div>
+        <div class="email-body-wrap">
+          <textarea id="emailBody" style="width:100%;">${body}</textarea>
+        </div>
+        <div class="email-footer">
+          <button class="btn btn-sm" onclick="copyEmail()">📋 Copy</button>
+          <button class="btn btn-sm" onclick="openMail('${encodeURIComponent(subject)}')">📨 Open in Mail</button>
+          <button class="btn btn-sm btn-dark" onclick="composeEmail()">🔄 Regenerate</button>
+        </div>
+      </div>`;
+  } catch(e) {
+    setStatus('email-status', '❌ ' + e.message, false);
+  }
+}
+
+function copyEmail() {
+  const body = document.getElementById('emailBody');
+  if (!body) return;
+  navigator.clipboard.writeText(body.value).catch(() => { body.select(); document.execCommand('copy'); });
+  const btn = event.target.closest('button');
+  const orig = btn.innerHTML;
+  btn.innerHTML = '✅ Copied!';
+  setTimeout(() => btn.innerHTML = orig, 1800);
+}
+
+function openMail(subject) {
+  const body = document.getElementById('emailBody');
+  if (body) window.open(`mailto:?subject=${subject}&body=${encodeURIComponent(body.value)}`);
+}
+
+// ── Init ───────────────────────────────────────────────────────────────
+document.getElementById('apify-key-input').value = APIFY_TOKEN;
+if (CLAUDE_KEY) document.getElementById('claude-key-input').value = CLAUDE_KEY;
+</script>
+</body>
+</html>
