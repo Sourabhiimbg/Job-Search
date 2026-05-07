@@ -576,7 +576,7 @@ async function searchJobs() {
   try {
     const items = await runActor(
       'nexgendata~linkedin-jobs-scraper',
-      { keyword: kw, location: loc, maxItems: max },
+      { keywords: [kw], location: loc, maxItems: max },
       'job-status', 'Scraping LinkedIn jobs — this takes 1–2 min'
     );
 
@@ -672,7 +672,7 @@ async function searchProjects() {
   try {
     const items = await runActor(
       'nexgendata~linkedin-jobs-scraper',
-      { keyword: query, location: loc, maxItems: 15 },
+      { keywords: [query], location: loc, maxItems: 15 },
       'proj-status', `Searching for live projects on ${projSrc}`
     );
 
@@ -744,7 +744,7 @@ async function findRecruiters() {
   try {
     const items = await runActor(
       'nexgendata~linkedin-jobs-scraper',
-      { keyword: `recruiter talent acquisition ${company} ${focus}`, location: 'India', maxItems: 8 },
+      { keywords: [`recruiter talent acquisition ${company} ${focus}`], location: 'India', maxItems: 8 },
       'rec-status', `Searching LinkedIn for ${company} recruiters`
     );
 
